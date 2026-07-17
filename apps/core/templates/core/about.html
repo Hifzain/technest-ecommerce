@@ -1,0 +1,80 @@
+﻿{% extends "base.html" %}
+{% block title %}About Us | TechNest{% endblock %}
+{% block content %}
+
+<section class="page-hero" data-aos="fade-up">
+    <h1>Built by <span class="gradient-text">Enthusiasts</span>, for Enthusiasts</h1>
+    <p>We started TechNest because we were tired of overpriced hardware and unreliable sellers. Now we are Pakistan is trusted source for computer parts and electronics.</p>
+</section>
+
+<section class="about-stats" data-aos="fade-up">
+    <div class="stats-container">
+        <div class="stat-item">
+            <h3>15K+</h3>
+            <p>Happy Customers</p>
+        </div>
+        <div class="stat-item">
+            <h3>2,500+</h3>
+            <p>Products Listed</p>
+        </div>
+        <div class="stat-item">
+            <h3>50+</h3>
+            <p>Trusted Brands</p>
+        </div>
+        <div class="stat-item">
+            <h3>99%</h3>
+            <p>On-Time Delivery</p>
+        </div>
+    </div>
+</section>
+
+<section class="about-content">
+    <div class="about-grid">
+        <div class="about-text" data-aos="fade-right">
+            <span class="section-tag" style="text-align:left; display:block;">Our Story</span>
+            <h2 class="section-title" style="text-align:left;">Why We Started TechNest</h2>
+            <p>TechNest began with a simple frustration: finding genuine computer hardware at fair prices in Pakistan was harder than it should be. Between counterfeit parts, inflated prices, and unreliable delivery, gamers and professionals alike were left with few options they could trust.</p>
+            <p>So we built the store we wished existed — authentic components, transparent pricing, real specifications, and a team that actually understands what a PSU wattage rating means.</p>
+        </div>
+        <div class="about-image" data-aos="fade-left">
+            <div class="about-image-placeholder">
+                <i class="fa-solid fa-microchip"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="values-section">
+    <span class="section-tag" data-aos="fade-up">What Drives Us</span>
+    <h2 class="section-title" data-aos="fade-up">Our Values</h2>
+    <div class="values-grid">
+        <div class="value-card" data-aos="zoom-in" data-aos-delay="0">
+            <i class="fa-solid fa-shield-halved"></i>
+            <h3>100% Genuine</h3>
+            <p>Every product is sourced directly from authorized distributors. No exceptions.</p>
+        </div>
+        <div class="value-card" data-aos="zoom-in" data-aos-delay="100">
+            <i class="fa-solid fa-tag"></i>
+            <h3>Fair Pricing</h3>
+            <p>Transparent prices with no hidden fees, plus real sales when we run them.</p>
+        </div>
+        <div class="value-card" data-aos="zoom-in" data-aos-delay="200">
+            <i class="fa-solid fa-truck-fast"></i>
+            <h3>Fast Delivery</h3>
+            <p>Reliable, tracked delivery across Pakistan with careful packaging.</p>
+        </div>
+        <div class="value-card" data-aos="zoom-in" data-aos-delay="300">
+            <i class="fa-solid fa-headset"></i>
+            <h3>Real Support</h3>
+            <p>Our team actually knows hardware and is here to help you choose right.</p>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section" data-aos="fade-up">
+    <h2>Ready to build your dream setup?</h2>
+    <p>Explore thousands of components curated for performance and value.</p>
+    <a href="{% url "products:shop" %}" class="btn-primary">Start Shopping <i class="fa-solid fa-arrow-right"></i></a>
+</section>
+
+{% endblock %}

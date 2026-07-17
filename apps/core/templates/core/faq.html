@@ -1,0 +1,42 @@
+﻿{% extends "base.html" %}
+{% block title %}FAQs | TechNest{% endblock %}
+{% block content %}
+
+<section class="page-hero" data-aos="fade-up">
+    <h1>Frequently Asked <span class="gradient-text">Questions</span></h1>
+    <p>Everything you need to know about orders, shipping, payments, and more.</p>
+</section>
+
+<section class="faq-section">
+    {% for category_label, items in grouped_faqs.items %}
+    <div class="faq-category" data-aos="fade-up">
+        <h2>{{ category_label }}</h2>
+        <div class="faq-list">
+            {% for item in items %}
+            <div class="faq-item">
+                <button class="faq-question" onclick="this.parentElement.classList.toggle(\"open\")">
+                    {{ item.question }}
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>{{ item.answer }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% empty %}
+    <div class="empty-state" data-aos="fade-up">
+        <i class="fa-solid fa-circle-question" style="font-size: 2rem; margin-bottom: 14px; display:block;"></i>
+        No FAQs added yet. Check back soon, or contact us directly.
+    </div>
+    {% endfor %}
+</section>
+
+<section class="cta-section" data-aos="fade-up">
+    <h2>Still have questions?</h2>
+    <p>Our team is happy to help with anything not covered here.</p>
+    <a href="{% url "core:contact" %}" class="btn-primary">Contact Us <i class="fa-solid fa-arrow-right"></i></a>
+</section>
+
+{% endblock %}

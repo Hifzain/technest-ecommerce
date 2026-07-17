@@ -1,0 +1,121 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block page_title %}Overview{% endblock %}
+{% block dash_content %}
+
+<div class="dash-stats-grid">
+    <div class="dash-stat-card">
+        <div class="dash-stat-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+        <div>
+            <div class="dash-stat-value">Rs. {{ stats.total_revenue }}</div>
+            <div class="dash-stat-label">Total Revenue</div>
+        </div>
+    </div>
+    <div class="dash-stat-card">
+        <div class="dash-stat-icon"><i class="fa-solid fa-receipt"></i></div>
+        <div>
+            <div class="dash-stat-value">{{ stats.total_orders }}</div>
+            <div class="dash-stat-label">Total Orders</div>
+        </div>
+    </div>
+    <div class="dash-stat-card">
+        <div class="dash-stat-icon"><i class="fa-solid fa-box"></i></div>
+        <div>
+            <div class="dash-stat-value">{{ stats.total_products }}</div>
+            <div class="dash-stat-label">Active Products</div>
+        </div>
+    </div>
+    <div class="dash-stat-card">
+        <div class="dash-stat-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div>
+            <div class="dash-stat-value">{{ stats.low_stock_products }}</div>
+            <div class="dash-stat-label">Low Stock Items</div>
+        </div>
+    </div>
+</div>
+
+<div class="dash-charts-grid">
+    <div class="dash-card">
+        <h3>Sales Trend (Last 14 Days)</h3>
+        <canvas id="salesTrendChart" height="90"></canvas>
+    </div>
+    <div class="dash-card">
+        <h3>Order Status</h3>
+        <canvas id="orderStatusChart" height="90"></canvas>
+    </div>
+</div>
+
+<div class="dash-card" style="margin-bottom:30px;">
+    <h3>Top Selling Products</h3>
+    <canvas id="topProductsChart" height="70"></canvas>
+</div>
+
+<div class="dash-card">
+    <h3>Recent Orders</h3>
+    <table class="dash-table">
+        <thead>
+            <tr><th>Order #</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th></tr>
+        </thead>
+        <tbody>
+            {% for order in recent_orders %}
+            <tr>
+                <td><a href="{% url 'dashboard:order_detail' order.order_number %}">{{ order.order_number }}</a></td>
+                <td>{{ order.user.username }}</td>
+                <td>Rs. {{ order.total }}</td>
+                <td>{{ order.get_status_display }}</td>
+                <td>{{ order.date_created|date:"M d, Y" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">No orders yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const salesTrend = {{ sales_trend|safe }};
+    const topProducts = {{ top_products|safe }};
+    const orderStatus = {{ order_status|safe }};
+
+    new Chart(document.getElementById('salesTrendChart'), {
+        type: 'line',
+        data: {
+            labels: salesTrend.labels,
+            datasets: [{
+                label: 'Revenue (Rs.)',
+                data: salesTrend.data,
+                borderColor: '#7c5cff',
+                backgroundColor: 'rgba(124, 92, 255, 0.1)',
+                fill: true,
+                tension: 0.4,
+            }]
+        },
+        options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+    });
+
+    new Chart(document.getElementById('orderStatusChart'), {
+        type: 'doughnut',
+        data: {
+            labels: orderStatus.labels,
+            datasets: [{
+                data: orderStatus.data,
+                backgroundColor: ['#fbbf24', '#60a5fa', '#818cf8', '#34d399', '#f87171'],
+            }]
+        },
+        options: { plugins: { legend: { position: 'bottom' } } }
+    });
+
+    new Chart(document.getElementById('topProductsChart'), {
+        type: 'bar',
+        data: {
+            labels: topProducts.labels,
+            datasets: [{
+                label: 'Units Sold',
+                data: topProducts.data,
+                backgroundColor: '#00d9c0',
+                borderRadius: 8,
+            }]
+        },
+        options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+    });
+</script>
+{% endblock %}

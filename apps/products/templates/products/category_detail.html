@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}{{ category.name }} | TechNest{% endblock %}
+{% block content %}
+<div class="shop-results" style="max-width:1320px; margin:0 auto; padding: 40px 30px;">
+    <h2 class="section-title" style="text-align:left;" data-aos="fade-up">{{ category.name }}</h2>
+    <p class="section-subtitle" style="text-align:left; margin-left:0;" data-aos="fade-up">{{ category.description }}</p>
+    <div class="product-grid">
+        {% for product in page_obj %}
+            {% include 'includes/product_card.html' %}
+        {% empty %}
+            <p>No products in this category yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

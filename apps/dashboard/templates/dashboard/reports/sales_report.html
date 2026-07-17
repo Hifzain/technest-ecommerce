@@ -1,0 +1,39 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block page_title %}Sales Report{% endblock %}
+{% block dash_content %}
+<div class="dash-card" style="margin-bottom:20px;">
+    <h3>Sales Trend (Last 30 Days)</h3>
+    <canvas id="salesChart" height="80"></canvas>
+</div>
+<div class="dash-charts-grid">
+    <div class="dash-card">
+        <h3>Top 10 Products</h3>
+        <canvas id="topChart" height="90"></canvas>
+    </div>
+    <div class="dash-card">
+        <h3>Order Status Breakdown</h3>
+        <canvas id="statusChart" height="90"></canvas>
+    </div>
+</div>
+<script>
+    const sales = {{ sales_trend|safe }};
+    const top = {{ top_products|safe }};
+    const status = {{ order_status|safe }};
+
+    new Chart(document.getElementById('salesChart'), {
+        type: 'line',
+        data: { labels: sales.labels, datasets: [{ label: 'Revenue', data: sales.data, borderColor: '#7c5cff', backgroundColor: 'rgba(124,92,255,0.1)', fill: true, tension: 0.4 }] },
+        options: { plugins: { legend: { display: false } } }
+    });
+    new Chart(document.getElementById('topChart'), {
+        type: 'bar',
+        data: { labels: top.labels, datasets: [{ data: top.data, backgroundColor: '#00d9c0', borderRadius: 8 }] },
+        options: { plugins: { legend: { display: false } }, indexAxis: 'y' }
+    });
+    new Chart(document.getElementById('statusChart'), {
+        type: 'doughnut',
+        data: { labels: status.labels, datasets: [{ data: status.data, backgroundColor: ['#fbbf24','#60a5fa','#818cf8','#34d399','#f87171'] }] },
+        options: { plugins: { legend: { position: 'bottom' } } }
+    });
+</script>
+{% endblock %}

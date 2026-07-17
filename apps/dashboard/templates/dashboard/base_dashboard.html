@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard | TechNest{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="{% static 'dashboard/css/dashboard.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="dash-layout">
+        <aside class="dash-sidebar">
+            <div class="dash-logo">
+                <i class="fa-solid fa-microchip"></i> Tech<span>Nest</span>
+            </div>
+            <nav class="dash-nav">
+                <a href="{% url 'dashboard:home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                    <i class="fa-solid fa-chart-line"></i> Overview
+                </a>
+                <a href="{% url 'dashboard:product_list' %}" class="{% if 'product' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fa-solid fa-box"></i> Products
+                </a>
+                <a href="{% url 'dashboard:order_list' %}" class="{% if 'order' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fa-solid fa-receipt"></i> Orders
+                </a>
+                <a href="{% url 'dashboard:customer_list' %}" class="{% if 'customer' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fa-solid fa-users"></i> Customers
+                </a>
+                <a href="{% url 'dashboard:sales_report' %}" class="{% if 'report' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fa-solid fa-file-invoice-dollar"></i> Reports
+                </a>
+                <a href="/admin/" target="_blank">
+                    <i class="fa-solid fa-gear"></i> Django Admin
+                </a>
+            </nav>
+            <div class="dash-sidebar-footer">
+                <a href="{% url 'core:home' %}"><i class="fa-solid fa-arrow-left"></i> Back to Store</a>
+                <a href="{% url 'accounts:logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="dash-main">
+            <header class="dash-topbar">
+                <h1>{% block page_title %}Overview{% endblock %}</h1>
+                <div class="dash-user-chip">
+                    <i class="fa-solid fa-user-circle"></i> {{ user.username }}
+                </div>
+            </header>
+
+            {% if messages %}
+            <div class="dash-messages">
+                {% for message in messages %}
+                <div class="dash-toast {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="dash-content">
+                {% block dash_content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+</body>
+</html>

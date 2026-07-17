@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Your Cart | TechNest{% endblock %}
+{% block content %}
+<div class="cart-container" data-aos="fade-up">
+    <h2 class="section-title" style="text-align:left;">Your Cart</h2>
+
+    {% if cart.items.all %}
+    <div class="cart-items">
+        {% for item in cart.items.all %}
+        <div class="cart-row" data-item-id="{{ item.id }}">
+            <div class="cart-row-product">
+                {% with item.product.images.first as img %}
+                    {% if img %}<img src="{{ img.image.url }}" alt="{{ item.product.name }}">{% endif %}
+                {% endwith %}
+                <div>
+                    <h4>{{ item.product.name }}</h4>
+                    <p class="cart-unit-price">Rs. {{ item.product.current_price }} each</p>
+                </div>
+            </div>
+            <div class="cart-row-qty">
+                <button onclick="const el=this.nextElementSibling; const v=Math.max(0,parseInt(el.value)-1); el.value=v; updateCartItem({{ item.id }}, v, this.closest('.cart-row'));">-</button>
+                <input type="number" min="0" value="{{ item.quantity }}" onchange="updateCartItem({{ item.id }}, this.value, this.closest('.cart-row'));">
+                <button onclick="const el=this.previousElementSibling; const v=parseInt(el.value)+1; el.value=v; updateCartItem({{ item.id }}, v, this.closest('.cart-row'));">+</button>
+            </div>
+            <div class="cart-row-total line-total">Rs. {{ item.line_total }}</div>
+            <button class="cart-row-remove" onclick="removeCartItem({{ item.id }}, this.closest('.cart-row'));">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="cart-summary">
+        <span>Subtotal</span>
+        <span class="cart-subtotal-value">Rs. {{ cart.subtotal }}</span>
+    </div>
+    <a href="{% url 'orders:checkout' %}" class="btn-primary" style="width:100%; justify-content:center; margin-top:20px;">Proceed to Checkout</a>
+
+    {% else %}
+    <div class="empty-state" data-aos="fade-up">
+        <i class="fa-solid fa-cart-shopping" style="font-size: 2rem; margin-bottom: 14px; display:block;"></i>
+        Your cart is empty. <a href="{% url 'products:shop' %}">Start shopping</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

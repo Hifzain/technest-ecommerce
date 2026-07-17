@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block title %}Register | TechNest{% endblock %}
+{% block content %}
+<div class="auth-container" data-aos="fade-up">
+    <div class="auth-card">
+        <h2>Create Account</h2>
+        <p class="auth-subtitle">Join TechNest and start shopping</p>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label>{{ field.label }}</label>
+                {{ field|add_class:"form-input" }}
+                {% if field.errors %}
+                    <span class="form-error">{{ field.errors.0 }}</span>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">Create Account</button>
+        </form>
+        <p class="auth-switch">Already have an account? <a href="{% url 'accounts:login' %}">Login</a></p>
+    </div>
+</div>
+{% endblock %}

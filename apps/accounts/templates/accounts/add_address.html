@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block title %}Add Address | TechNest{% endblock %}
+{% block content %}
+<div class="auth-container" data-aos="fade-up">
+    <div class="auth-card">
+        <h2>Add Shipping Address</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label>{{ field.label }}</label>
+                {{ field|add_class:"form-input" }}
+                {% if field.errors %}
+                    <span class="form-error">{{ field.errors.0 }}</span>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">Save Address</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

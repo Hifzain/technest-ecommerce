@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}My Profile | TechNest{% endblock %}
+{% block content %}
+<div class="profile-container" data-aos="fade-up">
+    <h2 class="section-title" style="text-align:left;">My Profile</h2>
+
+    <div class="profile-card">
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Phone:</strong> {{ user.phone_number|default:"Not provided" }}</p>
+    </div>
+    <a href="{% url 'orders:order_history' %}" class="btn-secondary"
+        style="color:var(--dark); border-color:var(--primary); margin-bottom:20px; display:inline-flex;">
+        <i class="fa-solid fa-box"></i> View My Orders
+    </a>
+
+    <div class="profile-addresses">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>Saved Addresses</h3>
+            <a href="{% url 'accounts:add_address' %}" class="btn-secondary"
+                style="color:var(--dark); border-color:var(--primary);">+ Add Address</a>
+        </div>
+        {% for address in addresses %}
+        <div class="address-card">
+            <p><strong>{{ address.full_name }}</strong> {% if address.is_default %}<span
+                    class="badge-default">Default</span>{% endif %}</p>
+            <p>{{ address.address_line }}, {{ address.city }} {{ address.postal_code }}</p>
+            <p>{{ address.phone_number }}</p>
+        </div>
+        {% empty %}
+        <p class="section-subtitle" style="text-align:left; margin-left:0;">No addresses saved yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

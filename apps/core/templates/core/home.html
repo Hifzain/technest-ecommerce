@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content" data-aos="fade-up">
+        <span class="hero-badge"><i class="fa-solid fa-bolt"></i> Free shipping on orders over Rs. 5,000</span>
+        <h1>Power Your <span class="gradient-text">Setup</span> With The Best Hardware</h1>
+        <p>Premium GPUs, CPUs, peripherals & accessories — delivered fast, priced fair.</p>
+        <div class="hero-buttons">
+            <a href="#" class="btn-primary">Shop Now <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="#" class="btn-secondary"><i class="fa-solid fa-play"></i> View Deals</a>
+        </div>
+    </div>
+</section>
+
+<!-- Stats -->
+<section class="stats-strip">
+    <div class="stats-container">
+        <div class="stat-item" data-aos="fade-up">
+            <h3>15K+</h3>
+            <p>Happy Customers</p>
+        </div>
+        <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+            <h3>2,500+</h3>
+            <p>Products Listed</p>
+        </div>
+        <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+            <h3>24/7</h3>
+            <p>Customer Support</p>
+        </div>
+        <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+            <h3>4.8★</h3>
+            <p>Average Rating</p>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Categories -->
+<section class="categories">
+    <span class="section-tag" data-aos="fade-up">Explore</span>
+    <h2 class="section-title" data-aos="fade-up">Shop by Category</h2>
+    <p class="section-subtitle" data-aos="fade-up">Find exactly what your build needs</p>
+    <div class="category-grid">
+        {% for cat in categories %}
+        <a href="{% url 'products:category_detail' cat.slug %}" class="category-card" data-aos="zoom-in" data-aos-delay="{{ forloop.counter0|add:'0' }}00">
+            <i class="{{ cat.icon|default:'fa-solid fa-cube' }}"></i>
+            <h3>{{ cat.name }}</h3>
+        </a>
+        {% empty %}
+        <p class="section-subtitle">No categories added yet — add some in the admin panel.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Featured Products placeholder -->
+{% if best_sellers %}
+<section class="featured-products">
+    <span class="section-tag" data-aos="fade-up">Popular</span>
+    <h2 class="section-title" data-aos="fade-up">Best Sellers</h2>
+    <p class="section-subtitle" data-aos="fade-up">Our customers' favorite picks</p>
+    <div class="product-grid">
+        {% for product in best_sellers %}
+            {% include 'includes/product_card.html' %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{% if on_sale_products %}
+<section class="featured-products">
+    <span class="section-tag" data-aos="fade-up">Limited Time</span>
+    <h2 class="section-title" data-aos="fade-up">On Sale</h2>
+    <p class="section-subtitle" data-aos="fade-up">Grab these deals before they're gone</p>
+    <div class="product-grid">
+        {% for product in on_sale_products %}
+            {% include 'includes/product_card.html' %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{% if featured_products %}
+<section class="featured-products">
+    <span class="section-tag" data-aos="fade-up">Curated</span>
+    <h2 class="section-title" data-aos="fade-up">Featured Products</h2>
+    <div class="product-grid">
+        {% for product in featured_products %}
+            {% include 'includes/product_card.html' %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{% if not best_sellers and not on_sale_products and not featured_products %}
+<section class="featured-products">
+    <div class="empty-state" data-aos="fade-up">
+        <i class="fa-solid fa-box-open" style="font-size: 2rem; margin-bottom: 14px; display:block;"></i>
+        No products added yet — add some in the admin panel to see them here.
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

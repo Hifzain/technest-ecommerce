@@ -1,0 +1,41 @@
+﻿{% extends "dashboard/base_dashboard.html" %}
+{% block page_title %}Orders{% endblock %}
+{% block dash_content %}
+
+<div class="dash-search">
+    <form method="get">
+        <select name="status" onchange="this.form.submit()">
+            <option value="">All Statuses</option>
+            {% for value, label in status_choices %}
+            <option value="{{ value }}" {% if selected_status == value|stringformat:"s" %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </form>
+</div>
+
+<table class="dash-table">
+    <thead>
+        <tr><th>Order #</th><th>Customer</th><th>Total</th><th>Payment</th><th>Status</th><th>Date</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+        {% for order in page_obj %}
+        <tr>
+            <td><a href="{% url "dashboard:order_detail" order.order_number %}">{{ order.order_number }}</a></td>
+            <td>{{ order.user.username }}</td>
+            <td>Rs. {{ order.total }}</td>
+            <td>{{ order.get_payment_method_display }}</td>
+            <td>{{ order.get_status_display }}</td>
+            <td>{{ order.date_created|date:"M d, Y" }}</td>
+            <td><a href="{% url "dashboard:order_detail" order.order_number %}" class="dash-btn outline">View</a></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7">No orders found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="dash-pagination">
+    {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}">&laquo; Prev</a>{% endif %}
+    {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}">Next &raquo;</a>{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}My Wishlist | TechNest{% endblock %}
+{% block content %}
+<div class="wishlist-container" data-aos="fade-up">
+    <h2 class="section-title" style="text-align:left;">My Wishlist</h2>
+
+    {% if items %}
+    <div class="product-grid">
+        {% for item in items %}
+            {% include 'includes/product_card.html' with product=item.product %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fa-solid fa-heart" style="font-size: 2rem; margin-bottom: 14px; display:block;"></i>
+        Your wishlist is empty.
+        <br><br>
+        <a href="{% url 'products:shop' %}" class="btn-primary">Start Shopping</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% load static %}
+<div class="product-card" data-aos="fade-up">
+    {% if product.is_on_sale %}
+    <span class="badge-sale">-{{ product.discount_percentage }}%</span>
+    {% endif %}
+    <a href="{% url 'products:product_detail' product.slug %}" class="product-img-link">
+        {% with product.images.first as img %}
+        {% if img %}
+        <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:product.name }}">
+        {% else %}
+        <div class="no-image"><i class="fa-solid fa-image"></i></div>
+        {% endif %}
+        {% endwith %}
+    </a>
+    <div class="product-info">
+        <span class="product-category">{{ product.category.name }}</span>
+        <h3><a href="{% url 'products:product_detail' product.slug %}">{{ product.name }}</a></h3>
+        {% if product.review_count > 0 %}
+        <div class="star-rating-mini">
+            {% for i in "12345" %}
+            <i class="fa-solid fa-star {% if forloop.counter <= product.average_rating %}filled{% endif %}"></i>
+            {% endfor %}
+            <span>({{ product.review_count }})</span>
+        </div>
+        {% endif %}
+        <div class="product-price">
+            <span class="current-price">Rs. {{ product.current_price }}</span>
+            {% if product.is_on_sale %}
+            <span class="old-price">Rs. {{ product.price }}</span>
+            {% endif %}
+            {% if user.is_authenticated %}
+            <button class="wishlist-btn {% if product.id in user_wishlist_ids %}active{% endif %}"
+                data-product-id="{{ product.id }}" onclick="toggleWishlist({{ product.id }}, this)">
+                <i class="fa-solid fa-heart"></i>
+            </button>
+            {% endif %}
+        </div>
+        {% if product.in_stock %}
+        <button class="btn-add-cart" data-product-id="{{ product.id }}" onclick="addToCart({{ product.id }}, this)">
+            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+        </button>
+        {% else %}
+        <button class="btn-add-cart disabled" disabled>Out of Stock</button>
+        {% endif %}
+    </div>
+</div>

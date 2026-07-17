@@ -1,0 +1,69 @@
+﻿{% extends "base.html" %}
+{% block title %}Contact Us | TechNest{% endblock %}
+{% block content %}
+
+<section class="page-hero" data-aos="fade-up">
+    <h1>Get in <span class="gradient-text">Touch</span></h1>
+    <p>Have a question about an order, a product, or just want to say hi? We would love to hear from you.</p>
+</section>
+
+<section class="contact-section">
+    <div class="contact-grid">
+        <div class="contact-info" data-aos="fade-right">
+            <div class="contact-info-card">
+                <i class="fa-solid fa-location-dot"></i>
+                <div>
+                    <h4>Visit Us</h4>
+                    <p>Blue Area, Islamabad, Pakistan</p>
+                </div>
+            </div>
+            <div class="contact-info-card">
+                <i class="fa-solid fa-phone"></i>
+                <div>
+                    <h4>Call Us</h4>
+                    <p>+92 300 1234567</p>
+                </div>
+            </div>
+            <div class="contact-info-card">
+                <i class="fa-solid fa-envelope"></i>
+                <div>
+                    <h4>Email Us</h4>
+                    <p>support@technest.pk</p>
+                </div>
+            </div>
+            <div class="contact-info-card">
+                <i class="fa-solid fa-clock"></i>
+                <div>
+                    <h4>Working Hours</h4>
+                    <p>Mon - Sat: 10am - 8pm</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-form-card" data-aos="fade-left">
+            <h3>Send us a message</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <input type="text" name="name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" name="email" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Subject</label>
+                    <input type="text" name="subject" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea name="message" class="form-input" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">Send Message <i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

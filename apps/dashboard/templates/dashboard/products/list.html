@@ -1,0 +1,45 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block page_title %}Products{% endblock %}
+{% block dash_content %}
+
+<div class="dash-search">
+    <form method="get" style="display:flex; gap:10px;">
+        <input type="text" name="q" placeholder="Search by name or SKU..." value="{{ query }}">
+        <button type="submit" class="dash-btn">Search</button>
+    </form>
+    <a href="/admin/products/product/add/" class="dash-btn" style="margin-left:auto;">+ Add Product</a>
+</div>
+
+<table class="dash-table">
+    <thead>
+        <tr><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Sales</th><th>Status</th><th>Featured</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+        {% for product in page_obj %}
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.category.name }}</td>
+            <td>Rs. {{ product.current_price }}</td>
+            <td>{{ product.stock_quantity }}</td>
+            <td>{{ product.sales_count }}</td>
+            <td><span class="dash-badge {% if product.status == 1 %}active{% else %}inactive{% endif %}">{{ product.get_status_display }}</span></td>
+            <td>{% if product.is_featured %}<i class="fa-solid fa-star" style="color:#fbbf24;"></i>{% else %}—{% endif %}</td>
+            <td style="display:flex; gap:6px;">
+                <a href="/admin/products/product/{{ product.id }}/change/" class="dash-btn outline">Edit</a>
+                <form method="post" action="{% url 'dashboard:product_toggle_featured' product.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="dash-btn outline">{% if product.is_featured %}Unfeature{% else %}Feature{% endif %}</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="8">No products found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="dash-pagination">
+    {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}">&laquo; Prev</a>{% endif %}
+    {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}">Next &raquo;</a>{% endif %}
+</div>
+{% endblock %}

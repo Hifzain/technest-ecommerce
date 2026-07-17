@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}My Orders | TechNest{% endblock %}
+{% block content %}
+<div class="orders-container" data-aos="fade-up">
+    <h2 class="section-title" style="text-align:left;">My Orders</h2>
+
+    {% for order in orders %}
+    <a href="{% url 'orders:order_detail' order.order_number %}" class="order-history-card">
+        <div>
+            <strong>{{ order.order_number }}</strong>
+            <p>{{ order.date_created|date:"M d, Y" }} · {{ order.items.count }} item(s)</p>
+        </div>
+        <div class="order-status-badge status-{{ order.status }}">{{ order.get_status_display }}</div>
+        <div class="order-total-amount">Rs. {{ order.total }}</div>
+    </a>
+    {% empty %}
+    <div class="empty-state">
+        <i class="fa-solid fa-box" style="font-size: 2rem; margin-bottom: 14px; display:block;"></i>
+        No orders yet.
+        <br><br>
+        <a href="{% url 'products:shop' %}" class="btn-primary">Start Shopping</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

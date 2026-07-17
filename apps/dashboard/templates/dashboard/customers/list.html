@@ -1,0 +1,23 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block page_title %}Customers{% endblock %}
+{% block dash_content %}
+<table class="dash-table">
+    <thead><tr><th>Username</th><th>Email</th><th>Phone</th><th>Joined</th></tr></thead>
+    <tbody>
+        {% for customer in page_obj %}
+        <tr>
+            <td>{{ customer.username }}</td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.phone_number|default:"—" }}</td>
+            <td>{{ customer.date_joined|date:"M d, Y" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No customers yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="dash-pagination">
+    {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}">&laquo; Prev</a>{% endif %}
+    {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}">Next &raquo;</a>{% endif %}
+</div>
+{% endblock %}

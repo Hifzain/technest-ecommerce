@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Order Confirmed | TechNest{% endblock %}
+{% block content %}
+<div class="confirmation-container" data-aos="zoom-in">
+    <i class="fa-solid fa-circle-check confirmation-icon"></i>
+    <h2>Order Placed Successfully!</h2>
+    <p class="section-subtitle">Thank you for shopping with TechNest</p>
+
+    <div class="order-summary-card" style="text-align:left; margin-top:30px;">
+        <div class="summary-line"><span>Order Number</span><strong>{{ order.order_number }}</strong></div>
+        <div class="summary-line"><span>Total</span><strong>Rs. {{ order.total }}</strong></div>
+        <div class="summary-line"><span>Payment Method</span><strong>{{ order.get_payment_method_display }}</strong></div>
+        <div class="summary-divider"></div>
+        <div class="summary-line"><span>Shipping to</span></div>
+        <p>{{ order.shipping_full_name }}<br>{{ order.shipping_address_line }}, {{ order.shipping_city }}<br>{{ order.shipping_phone }}</p>
+    </div>
+
+    <div style="margin-top:30px; display:flex; gap:16px; justify-content:center;">
+        <a href="{% url 'orders:order_history' %}" class="btn-secondary" style="color:var(--dark); border-color:var(--primary);">View My Orders</a>
+        <a href="{% url 'products:shop' %}" class="btn-primary">Continue Shopping</a>
+    </div>
+</div>
+{% endblock %}

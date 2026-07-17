@@ -1,0 +1,157 @@
+﻿{% extends "base.html" %}
+{% block title %}{{ product.name }} | TechNest{% endblock %}
+{% block content %}
+<div class="product-detail-container">
+    <div class="product-gallery" data-aos="fade-right">
+        {% with product.images.first as img %}
+        {% if img %}
+        <img src="{{ img.image.url }}" alt="{{ product.name }}" class="main-product-img">
+        {% else %}
+        <div class="no-image large"><i class="fa-solid fa-image"></i></div>
+        {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="product-detail-info" data-aos="fade-left">
+        <span class="product-category">{{ product.category.name }}{% if product.brand %} · {{ product.brand.name }}{% endif %}</span>
+        <h1>{{ product.name }}</h1>
+        <p class="product-short-desc">{{ product.short_description }}</p>
+
+        {% if product.review_count > 0 %}
+        <div class="star-rating-large">
+            {% for i in "12345" %}
+            <i class="fa-solid fa-star {% if forloop.counter <= product.average_rating %}filled{% endif %}"></i>
+            {% endfor %}
+            <span class="rating-count">{{ product.average_rating }} ({{ product.review_count }} review{{ product.review_count|pluralize }})</span>
+        </div>
+        {% endif %}
+
+        <div class="product-price-detail">
+            <span class="current-price-large">Rs. {{ product.current_price }}</span>
+            {% if product.is_on_sale %}
+            <span class="old-price-large">Rs. {{ product.price }}</span>
+            <span class="badge-sale-inline">-{{ product.discount_percentage }}%</span>
+            {% endif %}
+        </div>
+
+        <p class="stock-status {% if product.in_stock %}in-stock{% else %}out-stock{% endif %}">
+            {% if product.in_stock %}
+            <i class="fa-solid fa-circle-check"></i> In Stock ({{ product.stock_quantity }} available)
+            {% else %}
+            <i class="fa-solid fa-circle-xmark"></i> Out of Stock
+            {% endif %}
+        </p>
+
+        {% if product.in_stock %}
+        <button class="btn-primary" style="margin-top:20px;" data-product-id="{{ product.id }}" onclick="addToCart({{ product.id }}, this)">
+            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+        </button>
+        {% endif %}
+
+        {% if product.specifications.all %}
+        <div class="product-specs">
+            <h3>Specifications</h3>
+            <table>
+                {% for spec in product.specifications.all %}
+                <tr>
+                    <td>{{ spec.key }}</td>
+                    <td>{{ spec.value }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+
+        {% if product.description %}
+        <div class="product-description">
+            <h3>Description</h3>
+            <p>{{ product.description }}</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if similar_products %}
+<section class="featured-products">
+    <span class="section-tag" data-aos="fade-up">Recommended</span>
+    <h2 class="section-title" data-aos="fade-up">You Might Also Like</h2>
+    <p class="section-subtitle" data-aos="fade-up">Powered by our similarity engine</p>
+    <div class="product-grid">
+        {% for similar in similar_products %}
+        {% include "includes/product_card.html" with product=similar %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<section class="reviews-section" data-aos="fade-up">
+    <div class="reviews-header">
+        <h2 class="section-title" style="text-align:left; margin-top:0;">Customer Reviews</h2>
+        {% if product.review_count > 0 %}
+        <div class="rating-summary">
+            <span class="rating-number">{{ product.average_rating }}</span>
+            <div class="star-rating-large">
+                {% for i in "12345" %}
+                <i class="fa-solid fa-star {% if forloop.counter <= product.average_rating %}filled{% endif %}"></i>
+                {% endfor %}
+            </div>
+            <span class="rating-count">Based on {{ product.review_count }} review{{ product.review_count|pluralize }}</span>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if user.is_authenticated %}
+        {% if user_can_review %}
+        <div class="review-form-card">
+            <h4>{% if user_review %}Update Your Review{% else %}Write a Review{% endif %}</h4>
+            <form method="post" action="{% url 'reviews:add_review' product.id %}">
+                {% csrf_token %}
+                <div class="star-input">
+                    {% for i in "54321" %}
+                    <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" {% if user_review.rating|stringformat:"s" == i %}checked{% endif %} required>
+                    <label for="star{{ i }}"><i class="fa-solid fa-star"></i></label>
+                    {% endfor %}
+                </div>
+                <input type="text" name="title" class="form-input" placeholder="Review title (optional)" value="{{ user_review.title|default:'' }}" style="margin-bottom:12px;">
+                <textarea name="comment" class="form-input" rows="3" placeholder="Share your experience with this product...">{{ user_review.comment|default:'' }}</textarea>
+                <button type="submit" class="btn-primary" style="margin-top:12px;">{% if user_review %}Update Review{% else %}Submit Review{% endif %}</button>
+            </form>
+        </div>
+        {% else %}
+        <p class="section-subtitle" style="text-align:left; margin-left:0;">Only customers who have purchased this product can leave a review.</p>
+        {% endif %}
+    {% else %}
+        <p class="section-subtitle" style="text-align:left; margin-left:0;"><a href="{% url 'accounts:login' %}">Login</a> to write a review.</p>
+    {% endif %}
+
+    <div class="reviews-list">
+        {% for review in reviews %}
+        <div class="review-card">
+            <div class="review-card-header">
+                <div class="star-rating-large">
+                    {% for i in "12345" %}
+                    <i class="fa-solid fa-star {% if forloop.counter <= review.rating %}filled{% endif %}"></i>
+                    {% endfor %}
+                </div>
+                {% if review.is_verified_purchase %}
+                <span class="badge-verified"><i class="fa-solid fa-circle-check"></i> Verified Purchase</span>
+                {% endif %}
+            </div>
+            {% if review.title %}<h4>{{ review.title }}</h4>{% endif %}
+            <p>{{ review.comment }}</p>
+            <div class="review-meta">
+                <span>{{ review.user.username }}</span> · <span>{{ review.date_created|date:"M d, Y" }}</span>
+                {% if review.user == user %}
+                <form method="post" action="{% url 'reviews:delete_review' review.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="review-delete-btn">Delete</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p class="section-subtitle" style="text-align:left; margin-left:0;">No reviews yet. Be the first to review this product!</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

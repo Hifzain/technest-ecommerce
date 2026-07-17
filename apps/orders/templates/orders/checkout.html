@@ -1,0 +1,85 @@
+﻿{% extends "base.html" %}
+{% block title %}Checkout | TechNest{% endblock %}
+{% block content %}
+<div class="checkout-container" data-aos="fade-up">
+    <h2 class="section-title" style="text-align:left;">Checkout</h2>
+
+    {% if not addresses %}
+    <div class="empty-state">
+        <i class="fa-solid fa-location-dot" style="font-size: 2rem; margin-bottom: 14px; display:block;"></i>
+        You need a shipping address before checking out.
+        <br><br>
+        <a href="{% url "accounts:add_address" %}" class="btn-primary">Add Address</a>
+    </div>
+    {% else %}
+    <form method="post" class="checkout-grid">
+        {% csrf_token %}
+
+        <div class="checkout-left">
+            <div class="checkout-section">
+                <h3>Shipping Address</h3>
+                {% for address in addresses %}
+                <label class="address-option">
+                    <input type="radio" name="address_id" value="{{ address.id }}" {% if address.is_default %}checked{% endif %} required>
+                    <div>
+                        <strong>{{ address.full_name }}</strong> {% if address.is_default %}<span class="badge-default">Default</span>{% endif %}
+                        <p>{{ address.address_line }}, {{ address.city }} {{ address.postal_code }}</p>
+                        <p>{{ address.phone_number }}</p>
+                    </div>
+                </label>
+                {% endfor %}
+                <a href="{% url "accounts:add_address" %}" class="add-address-link">+ Add a new address</a>
+            </div>
+
+            <div class="checkout-section">
+                <h3>Payment Method</h3>
+                <label class="address-option">
+                    <input type="radio" name="payment_method" value="0" checked>
+                    <div><strong>Cash on Delivery</strong>
+                        <p>Pay when your order arrives</p>
+                    </div>
+                </label>
+                <label class="address-option">
+                    <input type="radio" name="payment_method" value="1">
+                    <div><strong>Card Payment</strong>
+                        <p>Pay securely online via Stripe</p>
+                    </div>
+                </label>
+            </div>
+
+            <div class="checkout-section">
+                <h3>Order Notes (optional)</h3>
+                <textarea name="notes" class="form-input" rows="3" placeholder="Delivery instructions, etc."></textarea>
+            </div>
+        </div>
+
+        <div class="checkout-right">
+            <div class="order-summary-card">
+                <h3>Order Summary</h3>
+                {% for item in cart.items.all %}
+                <div class="summary-line">
+                    <span>{{ item.quantity }} x {{ item.product.name }}</span>
+                    <span>Rs. {{ item.line_total }}</span>
+                </div>
+                {% endfor %}
+                <div class="summary-divider"></div>
+                <div class="summary-line">
+                    <span>Subtotal</span>
+                    <span>Rs. {{ cart.subtotal }}</span>
+                </div>
+                <div class="summary-line">
+                    <span>Shipping</span>
+                    <span>{% if cart.subtotal >= 5000 %}Free{% else %}Rs. 250{% endif %}</span>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-line summary-total">
+                    <span>Total</span>
+                    <span>Rs. {{ cart.subtotal }}{% if cart.subtotal < 5000 %} + 250{% endif %}</span>
+                </div>
+                <button type="submit" class="btn-primary" style="width:100%; justify-content:center; margin-top:20px;">Place Order</button>
+            </div>
+        </div>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

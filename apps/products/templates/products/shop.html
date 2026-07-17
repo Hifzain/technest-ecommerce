@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Shop | TechNest{% endblock %}
+{% block content %}
+<div class="shop-container">
+    <aside class="shop-filters" data-aos="fade-right">
+        <form method="get">
+            <h4>Search</h4>
+            <input type="text" name="q" placeholder="Search products..." value="{{ query }}">
+
+            <h4>Category</h4>
+            <select name="category">
+                <option value="">All Categories</option>
+                {% for cat in categories %}
+                <option value="{{ cat.slug }}" {% if cat.slug == selected_category %}selected{% endif %}>{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+
+            <h4>Brand</h4>
+            <select name="brand">
+                <option value="">All Brands</option>
+                {% for brand in brands %}
+                <option value="{{ brand.slug }}" {% if brand.slug == selected_brand %}selected{% endif %}>{{ brand.name }}</option>
+                {% endfor %}
+            </select>
+
+            <h4>Sort By</h4>
+            <select name="sort">
+                <option value="">Newest</option>
+                <option value="price_low" {% if selected_sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                <option value="price_high" {% if selected_sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                <option value="best_selling" {% if selected_sort == 'best_selling' %}selected{% endif %}>Best Selling</option>
+            </select>
+
+            <button type="submit" class="btn-primary" style="width:100%; justify-content:center; margin-top:16px;">Apply Filters</button>
+        </form>
+    </aside>
+
+    <div class="shop-results">
+        <h2 class="section-title" style="text-align:left; margin-top:0;" data-aos="fade-up">Shop All Products</h2>
+        <div class="product-grid">
+            {% for product in page_obj %}
+                {% include 'includes/product_card.html' %}
+            {% empty %}
+                <p>No products match your filters.</p>
+            {% endfor %}
+        </div>
+
+        {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">&laquo; Prev</a>
+            {% endif %}
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Next &raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
