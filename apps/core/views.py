@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from apps.products.models import Product, Category
 from .models import ContactMessage, FAQ
+from django.views.decorators.cache import cache_page
 
 
+@cache_page(60 * 5)  # cache for 5 minutes
 def home(request):
     context = {
         'categories': Category.objects.filter(is_active=True)[:8],

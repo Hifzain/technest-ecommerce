@@ -6,7 +6,7 @@
     <a href="{% url 'products:product_detail' product.slug %}" class="product-img-link">
         {% with product.images.first as img %}
         {% if img %}
-        <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:product.name }}">
+       <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:product.name }}" loading="lazy">
         {% else %}
         <div class="no-image"><i class="fa-solid fa-image"></i></div>
         {% endif %}
