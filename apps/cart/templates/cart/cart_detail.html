@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% block title %}Your Cart | TechNest{% endblock %}
 {% block content %}
 <div class="cart-container" data-aos="fade-up">
@@ -10,7 +10,7 @@
         <div class="cart-row" data-item-id="{{ item.id }}">
             <div class="cart-row-product">
                 {% with item.product.images.first as img %}
-                    {% if img %}<img src="{{ img.image.url }}" alt="{{ item.product.name }}">{% endif %}
+                {% if img %}<img src="{{ img.image.url }}" alt="{{ item.product.name }}">{% endif %}
                 {% endwith %}
                 <div>
                     <h4>{{ item.product.name }}</h4>
@@ -18,9 +18,15 @@
                 </div>
             </div>
             <div class="cart-row-qty">
-                <button onclick="const el=this.nextElementSibling; const v=Math.max(0,parseInt(el.value)-1); el.value=v; updateCartItem({{ item.id }}, v, this.closest('.cart-row'));">-</button>
-                <input type="number" min="0" value="{{ item.quantity }}" onchange="updateCartItem({{ item.id }}, this.value, this.closest('.cart-row'));">
-                <button onclick="const el=this.previousElementSibling; const v=parseInt(el.value)+1; el.value=v; updateCartItem({{ item.id }}, v, this.closest('.cart-row'));">+</button>
+                <button
+                    onclick="const el=this.nextElementSibling; const v=Math.max(0,parseInt(el.value)-1); el.value=v; updateCartItem({{ item.id }}, v, this.closest('.cart-row')); this.closest('.cart-row-qty').querySelector('.qty-plus').disabled = (v >= {{ item.product.stock_quantity }});">-</button>
+                <input type="number" min="0" max="{{ item.product.stock_quantity }}" value="{{ item.quantity }}"
+                    onchange="updateCartItem({{ item.id }}, this.value, this.closest('.cart-row'));">
+               <button class="qty-plus" {% if item.quantity >= item.product.stock_quantity %}disabled{% endif %}
+                    onclick="const el=this.previousElementSibling; const max={{ item.product.stock_quantity }}; let
+                    v=parseInt(el.value)+1; if(v > max){ v = max; showToast('Only ' + max + ' available in stock',
+                    true); this.disabled = true; } el.value=v; updateCartItem({{ item.id }}, v,
+                    this.closest('.cart-row')); this.disabled = (v >= max);">+</button>
             </div>
             <div class="cart-row-total line-total">Rs. {{ item.line_total }}</div>
             <button class="cart-row-remove" onclick="removeCartItem({{ item.id }}, this.closest('.cart-row'));">
@@ -34,7 +40,8 @@
         <span>Subtotal</span>
         <span class="cart-subtotal-value">Rs. {{ cart.subtotal }}</span>
     </div>
-    <a href="{% url 'orders:checkout' %}" class="btn-primary" style="width:100%; justify-content:center; margin-top:20px;">Proceed to Checkout</a>
+    <a href="{% url 'orders:checkout' %}" class="btn-primary"
+        style="width:100%; justify-content:center; margin-top:20px;">Proceed to Checkout</a>
 
     {% else %}
     <div class="empty-state" data-aos="fade-up">

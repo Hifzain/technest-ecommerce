@@ -1119,7 +1119,15 @@ ul { list-style: none; }
 .cart-count.bump {
     animation: bump 0.4s ease;
 }
+/* ===== Wishlist Badge (distinct from cart badge) ===== */
+.wishlist-count {
+    background: linear-gradient(135deg, #ff5c7c, #ff2e63) !important;
+    box-shadow: 0 4px 10px rgba(255, 46, 99, 0.35);
+}
 
+.wishlist-count.bump {
+    animation: bump 0.4s ease;
+}
 @keyframes bump {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.4); }
@@ -2044,4 +2052,23 @@ button:disabled {
     color: var(--gray);
     font-size: 0.9rem;
     line-height: 1.7;
+}
+.btn-add-cart.in-cart {
+    background: #16a34a;
+}
+
+.btn-add-cart.in-cart:hover {
+    background: #15803d;
+}
+
+.cart-row-qty button:disabled {
+    background: #e2e4f3;
+    color: var(--gray);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.cart-row-qty button:disabled:hover {
+    background: #e2e4f3;
+    color: var(--gray);
 }

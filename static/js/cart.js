@@ -37,7 +37,7 @@ function showToast(message, isError = false) {
 }
 
 function updateCartCount(count) {
-    document.querySelectorAll('.cart-count').forEach(el => {
+    document.querySelectorAll('.cart-count:not(.wishlist-count)').forEach(el => {
         el.textContent = count;
         el.classList.add('bump');
         setTimeout(() => el.classList.remove('bump'), 400);
@@ -62,13 +62,16 @@ function addToCart(productId, buttonEl) {
             if (data.success) {
                 showToast(data.message);
                 updateCartCount(data.cart_total_items);
-                buttonEl.innerHTML = '<i class="fa-solid fa-check"></i> Added!';
-                setTimeout(() => {
-                    buttonEl.innerHTML = originalText;
-                    buttonEl.disabled = false;
-                }, 1200);
+                buttonEl.innerHTML = '<i class="fa-solid fa-check"></i> In Cart';
+                buttonEl.classList.add('in-cart');
+                buttonEl.disabled = false;
+            } else if (data.already_in_cart) {
+                showToast(data.message, true);
+                buttonEl.innerHTML = '<i class="fa-solid fa-check"></i> In Cart';
+                buttonEl.classList.add('in-cart');
+                buttonEl.disabled = false;
             } else {
-                showToast('Something went wrong.', true);
+                showToast(data.message || 'Something went wrong.', true);
                 buttonEl.innerHTML = originalText;
                 buttonEl.disabled = false;
             }
@@ -79,7 +82,6 @@ function addToCart(productId, buttonEl) {
             buttonEl.disabled = false;
         });
 }
-
 function updateCartItem(itemId, quantity, rowEl) {
     fetch(`/cart/update/${itemId}/`, {
         method: 'POST',
@@ -104,10 +106,15 @@ function updateCartItem(itemId, quantity, rowEl) {
                 if (data.cart_total_items === 0) {
                     location.reload();
                 }
+            } else {
+                showToast(data.message, true);
+                if (data.max_quantity !== undefined) {
+                    const input = rowEl.querySelector('input[type="number"]');
+                    input.value = data.max_quantity;
+                }
             }
         });
 }
-
 function removeCartItem(itemId, rowEl) {
     fetch(`/cart/remove/${itemId}/`, {
         method: 'POST',
@@ -144,13 +151,13 @@ function toggleWishlist(productId, buttonEl) {
                 buttonEl.classList.toggle('active', data.added);
                 showToast(data.added ? 'Added to wishlist' : 'Removed from wishlist');
                 document.querySelectorAll('.nav-icons .fa-heart').forEach(icon => {
-                    const badge = icon.parentElement.querySelector('.cart-count');
+                    const badge = icon.parentElement.querySelector('.wishlist-count');
                     if (data.wishlist_count > 0) {
                         if (badge) {
                             badge.textContent = data.wishlist_count;
                         } else {
                             const span = document.createElement('span');
-                            span.className = 'cart-count';
+                            span.className = 'cart-count wishlist-count';
                             span.textContent = data.wishlist_count;
                             icon.parentElement.appendChild(span);
                         }

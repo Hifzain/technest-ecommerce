@@ -36,9 +36,16 @@
             {% endif %}
         </div>
         {% if product.in_stock %}
-        <button class="btn-add-cart" data-product-id="{{ product.id }}" onclick="addToCart({{ product.id }}, this)">
+        {% if product.id in cart_product_ids %}
+        <button class="btn-add-cart in-cart" data-product-id="{{ product.id }}"
+            onclick="addToCart('{{ product.id }}', this)">
+            <i class="fa-solid fa-check"></i> In Cart
+        </button>
+        {% else %}
+        <button class="btn-add-cart" data-product-id="{{ product.id }}" onclick="addToCart('{{ product.id }}', this)">
             <i class="fa-solid fa-cart-plus"></i> Add to Cart
         </button>
+        {% endif %}
         {% else %}
         <button class="btn-add-cart disabled" disabled>Out of Stock</button>
         {% endif %}

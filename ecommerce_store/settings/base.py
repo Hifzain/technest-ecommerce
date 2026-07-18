@@ -85,6 +85,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'apps.wishlist.context_processors.wishlist_context',
                 'apps.products.context_processors.categories_context',
+                'apps.cart.context_processors.cart_context',
             ],
         },
     },
@@ -103,9 +104,9 @@ WSGI_APPLICATION = 'ecommerce_store.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
+        'NAME': env('DB_NAME', default='ecom_store'),
+        'USER': env('DB_USER', default='postgres'),
+        'PASSWORD': env('DB_PASSWORD', default=''),
         'HOST': env('DB_HOST', default='localhost'),
         'PORT': env('DB_PORT', default='5432'),
     }
@@ -161,3 +162,8 @@ LOGIN_REDIRECT_URL = 'core:home'
 LOGOUT_REDIRECT_URL = 'core:home'
 STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY', default='')
 STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY', default='')
+
+# Session expires after 30 minutes of inactivity
+SESSION_COOKIE_AGE = 1800  # 30 minutes, in seconds
+SESSION_SAVE_EVERY_REQUEST = True  # resets the 30-min timer on every request (sliding expiration)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
