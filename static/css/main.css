@@ -1,4 +1,21 @@
-﻿html, body {
+html {
+    background-color: #0a0b16;
+}
+
+body {
+    background-color: var(--light, #f4f5fb);
+}
+
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    overscroll-behavior-y: none;
+}
+
+.navbar {
+    margin-top: 0 !important;
+}
+html, body {
     margin: 0 !important;
     padding: 0 !important;
 }
@@ -2080,3 +2097,4 @@ button:disabled {
     background: #e2e4f3;
     color: var(--gray);
 }
+

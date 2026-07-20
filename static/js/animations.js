@@ -1,4 +1,4 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     if (typeof AOS !== "undefined") {
         AOS.init({
             duration: 700,
