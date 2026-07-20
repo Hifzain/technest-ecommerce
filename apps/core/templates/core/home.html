@@ -7,8 +7,8 @@
 <section class="hero">
     <div class="hero-content" data-aos="fade-up">
         <span class="hero-badge"><i class="fa-solid fa-bolt"></i> Free shipping on orders over Rs. 5,000</span>
-        <h1>Power Your <span class="gradient-text">Setup</span> With The Best Hardware</h1>
-        <p>Premium GPUs, CPUs, peripherals & accessories — delivered fast, priced fair.</p>
+        <h1>Your Next <span class="gradient-text">Phone</span> Starts Here</h1>
+        <p>Latest smartphones, cases, chargers, earbuds & accessories Ã¢â‚¬â€ delivered fast, priced fair.</p>
         <div class="hero-buttons">
             <a href="#" class="btn-primary">Shop Now <i class="fa-solid fa-arrow-right"></i></a>
             <a href="#" class="btn-secondary"><i class="fa-solid fa-play"></i> View Deals</a>
@@ -32,7 +32,7 @@
             <p>Customer Support</p>
         </div>
         <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
-            <h3>4.8★</h3>
+            <h3>4.8ÃƒÂ¢Ã‹Å“Ã¢â‚¬Â¦</h3>
             <p>Average Rating</p>
         </div>
     </div>
@@ -44,13 +44,13 @@
     <h2 class="section-title" data-aos="fade-up">Shop by Category</h2>
     <p class="section-subtitle" data-aos="fade-up">Find exactly what your build needs</p>
     <div class="category-grid">
-        {% for cat in categories %}
-        <a href="{% url 'products:category_detail' cat.slug %}" class="category-card" data-aos="zoom-in" data-aos-delay="{{ forloop.counter0|add:'0' }}00">
-            <i class="{{ cat.icon|default:'fa-solid fa-cube' }}"></i>
-            <h3>{{ cat.name }}</h3>
-        </a>
-        {% empty %}
-        <p class="section-subtitle">No categories added yet — add some in the admin panel.</p>
+    {% for cat in categories %}
+    <a href="{% url 'products:category_detail' cat.slug %}" class="category-card" ...>
+        <i class="{{ cat.icon|default:'fa-solid fa-cube' }}"></i>
+        <h3>{{ cat.name }}</h3>
+    </a>
+    {% empty %}
+        <p class="section-subtitle">No categories added yet ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â add some in the admin panel.</p>
         {% endfor %}
     </div>
 </section>
@@ -63,7 +63,7 @@
     <p class="section-subtitle" data-aos="fade-up">Our customers' favorite picks</p>
     <div class="product-grid">
         {% for product in best_sellers %}
-            {% include 'includes/product_card.html' %}
+        {% include 'includes/product_card.html' %}
         {% endfor %}
     </div>
 </section>
@@ -76,7 +76,7 @@
     <p class="section-subtitle" data-aos="fade-up">Grab these deals before they're gone</p>
     <div class="product-grid">
         {% for product in on_sale_products %}
-            {% include 'includes/product_card.html' %}
+        {% include 'includes/product_card.html' %}
         {% endfor %}
     </div>
 </section>
@@ -88,7 +88,7 @@
     <h2 class="section-title" data-aos="fade-up">Featured Products</h2>
     <div class="product-grid">
         {% for product in featured_products %}
-            {% include 'includes/product_card.html' %}
+        {% include 'includes/product_card.html' %}
         {% endfor %}
     </div>
 </section>
@@ -98,7 +98,7 @@
 <section class="featured-products">
     <div class="empty-state" data-aos="fade-up">
         <i class="fa-solid fa-box-open" style="font-size: 2rem; margin-bottom: 14px; display:block;"></i>
-        No products added yet — add some in the admin panel to see them here.
+        No products added yet ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â add some in the admin panel to see them here.
     </div>
 </section>
 {% endif %}

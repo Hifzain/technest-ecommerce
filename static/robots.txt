@@ -1,8 +1,8 @@
-﻿User-agent: *
+User-agent: *
 Allow: /
 Disallow: /dashboard/
 Disallow: /accounts/profile/
 Disallow: /cart/
 Disallow: /orders/
 
-Sitemap: https://technest-ecommerce-1.onrender.com/sitemap.xml
+Sitemap: https://SmartTouch-ecommerce-1.onrender.com/sitemap.xml

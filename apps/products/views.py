@@ -14,9 +14,36 @@ def shop(request):
     sort = request.GET.get('sort')
 
     if query:
-        products = products.filter(
-            Q(name__icontains=query) | Q(short_description__icontains=query)
-        )
+        keywords = [k.strip() for k in query.split() if k.strip()]
+        if keywords:
+            keyword_filter = Q()
+            for kw in keywords:
+                keyword_filter |= (
+                    Q(name__icontains=kw) |
+                    Q(short_description__icontains=kw) |
+                    Q(description__icontains=kw) |
+                    Q(category__name__icontains=kw) |
+                    Q(brand__name__icontains=kw) |
+                    Q(specifications__value__icontains=kw)
+                )
+            products = products.filter(keyword_filter).distinct()
+
+            # Rank by relevance: count how many keywords matched, best matches first
+            from django.db.models import Case, When, IntegerField, Value
+            relevance_cases = []
+            for kw in keywords:
+                relevance_cases.append(
+                    When(name__icontains=kw, then=Value(3))
+                )
+                relevance_cases.append(
+                    When(short_description__icontains=kw, then=Value(1))
+                )
+            if relevance_cases:
+                products = products.annotate(
+                    relevance=Case(*relevance_cases, default=Value(0), output_field=IntegerField())
+                )
+                if not sort:
+                    products = products.order_by('-relevance', '-date_created')
 
     if category_slug:
         products = products.filter(category__slug=category_slug)

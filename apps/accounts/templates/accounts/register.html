@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
-{% block title %}Register | TechNest{% endblock %}
+{% block title %}Register | SmartTouch{% endblock %}
 {% block content %}
 <div class="auth-container" data-aos="fade-up">
     <div class="auth-card">
         <h2>Create Account</h2>
-        <p class="auth-subtitle">Join TechNest and start shopping</p>
+        <p class="auth-subtitle">Join SmartTouch and start shopping</p>
         <form method="post">
             {% csrf_token %}
             {% for field in form %}

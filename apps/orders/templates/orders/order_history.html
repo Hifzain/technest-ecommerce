@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}My Orders | TechNest{% endblock %}
+{% block title %}My Orders | SmartTouch{% endblock %}
 {% block content %}
 <div class="orders-container" data-aos="fade-up">
     <h2 class="section-title" style="text-align:left;">My Orders</h2>
@@ -8,7 +8,7 @@
     <a href="{% url 'orders:order_detail' order.order_number %}" class="order-history-card">
         <div>
             <strong>{{ order.order_number }}</strong>
-            <p>{{ order.date_created|date:"M d, Y" }} · {{ order.items.count }} item(s)</p>
+            <p>{{ order.date_created|date:"M d, Y" }} Â· {{ order.items.count }} item(s)</p>
         </div>
         <div class="order-status-badge status-{{ order.status }}">{{ order.get_status_display }}</div>
         <div class="order-total-amount">Rs. {{ order.total }}</div>

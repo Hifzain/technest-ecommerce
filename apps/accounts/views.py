@@ -16,7 +16,7 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, f"Welcome to TechNest, {user.username}!")
+            messages.success(request, f"Welcome to SmartTouch, {user.username}!")
             return redirect('core:home')
     else:
         form = RegisterForm()

@@ -2,7 +2,7 @@
 <header class="navbar" id="navbar">
     <div class="navbar-container">
         <a href="{% url "core:home" %}" class="logo">
-            <i class="fa-solid fa-microchip"></i> Tech<span>Nest</span>
+            <i class="fa-solid fa-hand-pointer"></i> Smart<span>Touch</span>
         </a>
         <nav class="nav-links" id="navLinks">
             <a href="{% url "core:home" %}">Home</a>
@@ -14,7 +14,7 @@
                 <div class="nav-dropdown-menu" id="categoryDropdownMenu">
                     {% for cat in nav_categories %}
                     <a href="{% url "products:category_detail" cat.slug %}">
-                        <i class="{{ cat.icon|default:"fa-solid fa-cube" }}"></i> {{ cat.name }}
+                        <i class="{{ cat.icon|default:" fa-solid fa-cube" }}"></i> {{ cat.name }}
                     </a>
                     {% empty %}
                     <span class="nav-dropdown-empty">No categories yet</span>
@@ -26,11 +26,13 @@
             <a href="{% url "core:faq" %}">FAQs</a>
         </nav>
         <div class="nav-icons">
-            <a href="#" class="icon-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
+            <button type="button" class="icon-btn" id="searchToggle"><i
+                    class="fa-solid fa-magnifying-glass"></i></button>
             {% if user.is_authenticated %}
             <a href="{% url "wishlist:wishlist_detail" %}" class="icon-btn">
                 <i class="fa-solid fa-heart"></i>
-                {% if wishlist_count > 0 %}<span class="cart-count wishlist-count">{{ wishlist_count }}</span>{% endif %}
+                {% if wishlist_count > 0 %}<span class="cart-count wishlist-count">{{ wishlist_count }}</span>
+                {% endif %}
             </a>
             {% else %}
             <a href="{% url "accounts:login" %}" class="icon-btn"><i class="fa-solid fa-heart"></i></a>
@@ -49,5 +51,13 @@
         <button class="hamburger" id="hamburger">
             <i class="fa-solid fa-bars"></i>
         </button>
+    </div>
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-overlay-inner">
+            <form action="{% url "products:shop" %}" method="get" class="search-overlay-form">
+                <input type="text" name="q" id="searchInput" placeholder="Search products..." autocomplete="off">
+                <button type="button" class="search-close" id="searchClose"><i class="fa-solid fa-xmark"></i></button>
+            </form>
+        </div>
     </div>
 </header>
