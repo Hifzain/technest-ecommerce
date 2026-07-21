@@ -5,7 +5,7 @@ from django.views.decorators.cache import cache_page
 from .models import ContactMessage, FAQ, HeroSlide
 
 
-@cache_page(60 * 5)
+# @cache_page(60 * 5)
 def home(request):
     context = {
         'hero_slides': HeroSlide.objects.filter(is_active=True),
