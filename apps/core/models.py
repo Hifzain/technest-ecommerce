@@ -39,3 +39,20 @@ class FAQ(models.Model):
 
     def __str__(self):
         return self.question
+
+class HeroSlide(models.Model):
+    title = models.CharField(max_length=200)
+    subtitle = models.CharField(max_length=300, blank=True)
+    image = models.ImageField(upload_to='hero_slides/')
+    badge_text = models.CharField(max_length=100, blank=True, help_text="e.g. 'Free shipping on orders over Rs. 5,000'")
+    button_text = models.CharField(max_length=50, default="Shop Now")
+    button_link = models.CharField(max_length=255, default="/shop/")
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', '-date_created']
+
+    def __str__(self):
+        return self.title

@@ -1,20 +1,21 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from apps.products.models import Product, Category
-from .models import ContactMessage, FAQ
 from django.views.decorators.cache import cache_page
 
+from .models import ContactMessage, FAQ, HeroSlide
 
-@cache_page(60 * 5)  # cache for 5 minutes
+
+@cache_page(60 * 5)
 def home(request):
     context = {
+        'hero_slides': HeroSlide.objects.filter(is_active=True),
         'categories': Category.objects.filter(is_active=True)[:8],
         'best_sellers': Product.objects.filter(status=1).order_by('-sales_count')[:8],
         'featured_products': Product.objects.filter(status=1, is_featured=True)[:8],
         'on_sale_products': [p for p in Product.objects.filter(status=1) if p.is_on_sale][:8],
     }
     return render(request, 'core/home.html', context)
-
 
 def about(request):
     return render(request, 'core/about.html')

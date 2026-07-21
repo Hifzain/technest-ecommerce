@@ -31,6 +31,7 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -167,3 +168,84 @@ STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY', default='')
 SESSION_COOKIE_AGE = 1800  # 30 minutes, in seconds
 SESSION_SAVE_EVERY_REQUEST = True  # resets the 30-min timer on every request (sliding expiration)
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+JAZZMIN_SETTINGS = {
+    "site_title": "SmartTouch Admin",
+    "site_header": "SmartTouch",
+    "site_brand": "SmartTouch",
+    "welcome_sign": "Welcome to SmartTouch Admin Panel",
+    "copyright": "SmartTouch",
+    "search_model": ["products.Product", "orders.Order", "accounts.User"],
+
+    "topmenu_links": [
+        {"name": "Store Home", "url": "core:home", "permissions": ["auth.view_user"]},
+        {"name": "Dashboard", "url": "dashboard:home", "permissions": ["auth.view_user"]},
+        {"model": "accounts.User"},
+    ],
+
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "accounts.User": "fas fa-user-circle",
+        "accounts.Address": "fas fa-location-dot",
+        "products.Product": "fas fa-mobile-screen-button",
+        "products.Category": "fas fa-list",
+        "products.Brand": "fas fa-copyright",
+        "products.ProductImage": "fas fa-image",
+        "products.Specification": "fas fa-list-check",
+        "products.Promotion": "fas fa-tags",
+        "cart.Cart": "fas fa-cart-shopping",
+        "cart.CartItem": "fas fa-cart-plus",
+        "orders.Order": "fas fa-receipt",
+        "orders.OrderItem": "fas fa-box",
+        "reviews.Review": "fas fa-star",
+        "wishlist.Wishlist": "fas fa-heart",
+        "core.ContactMessage": "fas fa-envelope",
+        "core.FAQ": "fas fa-circle-question",
+    },
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "related_modal_active": True,
+
+    "custom_css": None,
+    "custom_js": None,
+    "use_google_fonts_cdn": True,
+
+    "changeform_format": "horizontal_tabs",
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": "navbar-dark",
+    "accent": "accent-primary",
+    "navbar": "navbar-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": True,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": True,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": True,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "default",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success",
+    },
+}

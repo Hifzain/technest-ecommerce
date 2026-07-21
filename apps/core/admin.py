@@ -16,3 +16,12 @@ class FAQAdmin(admin.ModelAdmin):
     list_filter = ('category', 'is_active')
     search_fields = ('question', 'answer')
     list_editable = ('order', 'is_active')
+
+from .models import ContactMessage, FAQ, HeroSlide
+
+
+@admin.register(HeroSlide)
+class HeroSlideAdmin(admin.ModelAdmin):
+    list_display = ('title', 'order', 'is_active', 'date_created')
+    list_editable = ('order', 'is_active')
+    search_fields = ('title',)
