@@ -252,7 +252,7 @@ JAZZMIN_UI_TWEAKS = {
 }
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': env('CLOUDINARY_CLOUD_NAME', default=''),
-    'API_KEY': env('CLOUDINARY_API_KEY', default=''),
-    'API_SECRET': env('CLOUDINARY_API_SECRET', default=''),
+    'CLOUD_NAME': env('oedjixpn', default=''),
+    'API_KEY': env('937877434856618', default=''),
+    'API_SECRET': env('cmPNEiMNLHyzY-81bxuJnsNw70c', default=''),
 }

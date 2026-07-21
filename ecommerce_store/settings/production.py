@@ -1,7 +1,7 @@
 ﻿from .base import *
 import dj_database_url
 
-DEBUG = env.bool("DEBUG", default=False)
+DEBUG = False
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 
