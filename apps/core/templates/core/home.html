@@ -3,17 +3,45 @@
 
 {% block content %}
 
-<!-- Hero Section -->
-<section class="hero">
-    <div class="hero-content" data-aos="fade-up">
-        <span class="hero-badge"><i class="fa-solid fa-bolt"></i> Free shipping on orders over Rs. 5,000</span>
-        <h1>Your Next <span class="gradient-text">Phone</span> Starts Here</h1>
-        <p>Latest smartphones, cases, chargers, earbuds & accessories Ã¢â‚¬â€ delivered fast, priced fair.</p>
-        <div class="hero-buttons">
-            <a href="#" class="btn-primary">Shop Now <i class="fa-solid fa-arrow-right"></i></a>
-            <a href="#" class="btn-secondary"><i class="fa-solid fa-play"></i> View Deals</a>
+<section class="hero-slider" id="heroSlider">
+    {% if hero_slides %}
+        <div class="hero-slides-track">
+            {% for slide in hero_slides %}
+            <div class="hero-slide {% if forloop.first %}active{% endif %}" style="background-image: url('{{ slide.image.url }}');">
+                <div class="hero-slide-overlay"></div>
+                <div class="hero-slide-content">
+                    {% if slide.badge_text %}
+                    <span class="hero-badge"><i class="fa-solid fa-bolt"></i> {{ slide.badge_text }}</span>
+                    {% endif %}
+                    <h1>{{ slide.title }}</h1>
+                    {% if slide.subtitle %}<p>{{ slide.subtitle }}</p>{% endif %}
+                    <a href="{{ slide.button_link }}" class="btn-primary">{{ slide.button_text }} <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-    </div>
+
+        {% if hero_slides.count > 1 %}
+        <button class="hero-nav hero-nav-prev" id="heroPrev"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="hero-nav hero-nav-next" id="heroNext"><i class="fa-solid fa-chevron-right"></i></button>
+        <div class="hero-dots" id="heroDots">
+            {% for slide in hero_slides %}
+            <button class="hero-dot {% if forloop.first %}active{% endif %}" data-slide="{{ forloop.counter0 }}"></button>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% else %}
+        <div class="hero">
+            <div class="hero-content" data-aos="fade-up">
+                <span class="hero-badge"><i class="fa-solid fa-bolt"></i> Free shipping on orders over Rs. 5,000</span>
+                <h1>Your Next <span class="gradient-text">Phone</span> Starts Here</h1>
+                <p>Latest smartphones, cases, chargers, earbuds & accessories — delivered fast, priced fair.</p>
+                <div class="hero-buttons">
+                    <a href="{% url 'products:shop' %}" class="btn-primary">Shop Now <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 </section>
 
 <!-- Stats -->
@@ -32,7 +60,7 @@
             <p>Customer Support</p>
         </div>
         <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
-            <h3>4.8&#9733;</h3>
+            <h3>4.8</h3>
             <p>Average Rating</p>
         </div>
     </div>
@@ -44,13 +72,13 @@
     <h2 class="section-title" data-aos="fade-up">Shop by Category</h2>
     <p class="section-subtitle" data-aos="fade-up">Find exactly what your build needs</p>
     <div class="category-grid">
-    {% for cat in categories %}
-    <a href="{% url 'products:category_detail' cat.slug %}" class="category-card" ...>
-        <i class="{{ cat.icon|default:'fa-solid fa-cube' }}"></i>
-        <h3>{{ cat.name }}</h3>
-    </a>
-    {% empty %}
-        <p class="section-subtitle">No categories added yet ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â add some in the admin panel.</p>
+        {% for cat in categories %}
+        <a href="{% url 'products:category_detail' cat.slug %}" class="category-card" ...>
+            <i class="{{ cat.icon|default:'fa-solid fa-cube' }}"></i>
+            <h3>{{ cat.name }}</h3>
+        </a>
+        {% empty %}
+        <p class="section-subtitle">No categories added yet â€” add some in the admin panel.</p>
         {% endfor %}
     </div>
 </section>
@@ -98,7 +126,7 @@
 <section class="featured-products">
     <div class="empty-state" data-aos="fade-up">
         <i class="fa-solid fa-box-open" style="font-size: 2rem; margin-bottom: 14px; display:block;"></i>
-        No products added yet ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â add some in the admin panel to see them here.
+        No products added yet â€” add some in the admin panel to see them here.
     </div>
 </section>
 {% endif %}

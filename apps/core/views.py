@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from apps.products.models import Product, Category
 from django.views.decorators.cache import cache_page
-
 from .models import ContactMessage, FAQ, HeroSlide
 
 

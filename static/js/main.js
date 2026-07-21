@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         function startAutoplay() {
-            autoplayTimer = setInterval(nextSlide, 6000);
+            autoplayTimer = setInterval(nextSlide, 3500);
         }
 
         function resetAutoplay() {
