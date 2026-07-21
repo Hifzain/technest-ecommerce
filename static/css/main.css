@@ -2238,20 +2238,27 @@ button:disabled {
 }
 
 
-/* Dark gradient overlay */
-.hero-slide-overlay {
-    position: absolute;
-    inset: 0;
+.hero-slide-overlay{
+    position:absolute;
+    inset:0;
 
     background:
+        radial-gradient(circle at 20% 25%,
+            rgba(0,183,255,.18),
+            transparent 35%),
+
+        radial-gradient(circle at 80% 80%,
+            rgba(132,0,255,.15),
+            transparent 35%),
+
         linear-gradient(
-            160deg,
-            rgba(10,11,22,0.88) 0%,
-            rgba(18,20,43,0.72) 55%,
-            rgba(22,24,58,0.65) 100%
+            120deg,
+            rgba(8,10,20,.90) 0%,
+            rgba(10,14,35,.72) 45%,
+            rgba(15,18,45,.55) 100%
         );
 
-    z-index: 1;
+    z-index:1;
 }
 
 
