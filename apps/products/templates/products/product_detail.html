@@ -1,19 +1,26 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 {% block title %}{{ product.name }} | SmartTouch{% endblock %}
 {% block meta_description %}{{ product.short_description|default:product.name }} 
 - Buy at SmartTouch. Best price, genuine product, fast delivery in Pakistan.{% endblock %}
 {% block content %}
 <div class="product-detail-container">
     <div class="product-gallery" data-aos="fade-right">
-        {% with product.images.first as img %}
-        {% if img %}
-        <img src="{{ img.image.url }}" alt="{{ product.name }}" class="main-product-img">
-        {% else %}
-        <div class="no-image large"><i class="fa-solid fa-image"></i></div>
-        {% endif %}
-        {% endwith %}
+    {% if product.images.all %}
+    <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" class="main-product-img" id="mainProductImage">
+    {% if product.images.count > 1 %}
+    <div class="product-thumbnails">
+        {% for img in product.images.all %}
+        <img src="{{ img.image.url }}"
+             alt="{{ img.alt_text|default:product.name }}"
+             class="product-thumbnail {% if forloop.first %}active{% endif %}"
+             onclick="document.getElementById('mainProductImage').src = this.src; document.querySelectorAll('.product-thumbnail').forEach(t => t.classList.remove('active')); this.classList.add('active');">
+        {% endfor %}
     </div>
-
+    {% endif %}
+    {% else %}
+    <div class="no-image large"><i class="fa-solid fa-image"></i></div>
+    {% endif %}
+</div>
     <div class="product-detail-info" data-aos="fade-left">
         <span class="product-category">{{ product.category.name }}{% if product.brand %} · {{ product.brand.name }}{% endif %}</span>
         <h1>{{ product.name }}</h1>
